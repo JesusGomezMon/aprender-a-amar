@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aprender a Amar — Landing de venta
 
-## Getting Started
+Landing en React (Next.js) con pagos Stripe, base de datos de compradores, comprobante por correo y WhatsApp, SEO optimizado y despliegue en Vercel.
 
-First, run the development server:
+## Inicio rápido
 
 ```bash
+cd aprender-a-amar
+cp .env.example .env.local
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Despliegue en Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Sube el repo a GitHub.
+2. En [vercel.com](https://vercel.com) → **Add New Project** → importa el repo.
+3. **Root Directory**: `aprender-a-amar` (si el repo incluye la carpeta padre).
+4. En **Storage**, crea una base **Postgres** (Neon). Vercel inyecta `POSTGRES_URL` automáticamente.
+5. En **Settings → Environment Variables**, añade las variables de `.env.example`.
+6. Deploy.
 
-## Learn More
+### Webhook de Stripe
 
-To learn more about Next.js, take a look at the following resources:
+Tras el primer deploy:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Stripe Dashboard → **Developers → Webhooks → Add endpoint**
+2. URL: `https://tu-dominio.vercel.app/api/webhooks/stripe`
+3. Evento: `checkout.session.completed`
+4. Copia el **Signing secret** a `STRIPE_WEBHOOK_SECRET` en Vercel y redeploy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Servicios
 
-## Deploy on Vercel
+| Servicio | Uso |
+|----------|-----|
+| **Stripe** | Checkout con tarjeta ($400 MXN) |
+| **Vercel Postgres** | Registro de compradores |
+| **Resend** | Comprobante por correo |
+| **Twilio WhatsApp** | Comprobante por WhatsApp (opcional) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+La tabla `buyers` se crea sola en el primer pago.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## SEO incluido
+
+- Metadata Open Graph y Twitter
+- `sitemap.xml` y `robots.txt`
+- JSON-LD tipo `Course` para Google
+- `lang="es"` y URLs canónicas
+
+## Estructura
+
+```
+src/
+  app/           # Páginas y API routes
+  components/    # Landing y checkout
+  config/        # Datos del curso
+  lib/           # DB, Stripe, notificaciones
+```
+
+## Git
+
+El repositorio ya está inicializado en esta carpeta. Para conectar con GitHub:
+
+```bash
+git remote add origin https://github.com/TU_USUARIO/aprender-a-amar.git
+git push -u origin master
+```
