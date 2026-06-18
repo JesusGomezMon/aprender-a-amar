@@ -12,14 +12,13 @@ export async function POST(request: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
             currency: "mxn",
             unit_amount: siteConfig.priceStripe,
             product_data: {
-              name: `${siteConfig.name} — Curso en vivo`,
+              name: `${siteConfig.name} - Curso en vivo`,
               description: `${siteConfig.sessions} sesiones de ${siteConfig.sessionHours} horas basadas en El arte de amar de Erich Fromm`,
             },
           },
