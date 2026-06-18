@@ -44,7 +44,7 @@ export function CheckoutButton() {
         required
       />
       <button type="submit" className="btn btn-primary" disabled={loading}>
-        {loading ? "Redirigiendo a Stripe…" : "Pagar con tarjeta — $400"}
+        {loading ? "Redirigiendo a Stripe…" : "Pagar con tarjeta · $400"}
       </button>
       {error && <p className="checkout-error">{error}</p>}
       <p className="checkout-note">Pago seguro procesado por Stripe.</p>

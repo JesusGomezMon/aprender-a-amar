@@ -2,11 +2,12 @@ import { CheckoutButton } from "@/components/CheckoutButton";
 import { siteConfig } from "@/config/site";
 
 const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
-const whatsappTransferUrl = whatsappNumber
+const hasWhatsapp = Boolean(whatsappNumber);
+const whatsappTransferUrl = hasWhatsapp
   ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       "Hola, quiero inscribirme a Aprender a Amar por transferencia. ¿Me pasas los datos?",
     )}`
-  : "#";
+  : "";
 
 const temario = [
   {
@@ -20,7 +21,7 @@ const temario = [
       },
       {
         strong: "La separatidad.",
-        text: "Esa sensación de estar solos —incluso acompañados— y de dónde nace.",
+        text: "Esa sensación de estar solos, incluso acompañados, y de dónde nace.",
       },
       {
         strong: "Las falsas soluciones.",
@@ -82,23 +83,23 @@ const temario = [
 const includes = [
   {
     bold: "4 sesiones en vivo de 2 horas",
-    rest: "— análisis, ejemplos y conversación abierta.",
+    rest: "con análisis, ejemplos y conversación abierta.",
   },
   {
     bold: "El arte de amar de Erich Fromm",
-    rest: "— traducido, idea por idea, a tu vida real.",
+    rest: "traducido, idea por idea, a tu vida real.",
   },
   {
     bold: "Cultura pop como lente",
-    rest: "— cine, música, literatura y mito para ver lo invisible.",
+    rest: "cine, música, literatura y mito para ver lo invisible.",
   },
   {
     bold: "Espacio para preguntar",
-    rest: "— dudar, pensar en voz alta y mirarte de frente.",
+    rest: "dudar, pensar en voz alta y mirarte de frente.",
   },
   {
     bold: "Todo por $400 pesos",
-    rest: "— un precio para que nada te lo impida.",
+    rest: "un precio para que nada te lo impida.",
   },
 ];
 
@@ -112,7 +113,7 @@ const popTags = [
 
 export function LandingPage() {
   return (
-    <div className="page">
+    <div className="page" id="contenido">
       <section className="hero">
         <div className="hero-amp" aria-hidden="true">
           &amp;
@@ -138,6 +139,9 @@ export function LandingPage() {
             <a href="#pago" className="btn btn-cream">
               Quiero inscribirme
             </a>
+            <a href="#temario" className="btn btn-ghost">
+              Ver temario
+            </a>
           </div>
         </div>
       </section>
@@ -147,10 +151,10 @@ export function LandingPage() {
           <span className="eyebrow">El problema</span>
           <p className="lead">
             Llevas años creyendo que el amor es algo que{" "}
-            <em className="text-accent">te pasa</em> —o que no te pasa lo
+            <em className="text-accent">te pasa</em>, o que no te pasa lo
             suficiente.
           </p>
-          <p className="body">
+          <p className="body problem-body">
             Que basta con encontrar a la persona correcta. Que si duele, es
             porque es real. Y entre relación y relación, la misma sensación:
             estás solo, hasta acompañado. Confundes la necesidad con el cariño,
@@ -161,25 +165,27 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="section section-dark center">
-        <div className="container narrow">
-          <span className="eyebrow eyebrow-coral">Cómo lo vemos</span>
-          <p className="lead lead-light">
-            Cada idea de Fromm la vamos a ver a través de una película, una
-            canción, un libro, un mito que{" "}
-            <em className="text-soft">ya conoces.</em>
-          </p>
-          <p className="body body-light">
-            No te decimos cuáles. Esa es la mitad de la magia: descubrir que la
-            teoría más profunda sobre el amor estaba escondida en las historias
-            que viste sin darte cuenta.
-          </p>
-          <div className="tags">
-            {popTags.map((tag) => (
-              <span key={tag} className="tag">
-                {tag}
-              </span>
-            ))}
+      <section className="section section-dark section-lens" aria-labelledby="lens-title">
+        <div className="container">
+          <div className="lens-content">
+            <span className="eyebrow eyebrow-coral">Cómo lo vemos</span>
+            <h2 id="lens-title" className="lead lead-light lens-lead">
+              Cada idea de Fromm la vamos a ver a través de una película, una
+              canción, un libro o un mito que{" "}
+              <em className="text-soft">ya conoces.</em>
+            </h2>
+            <p className="body body-light lens-body">
+              No te decimos cuáles. Esa es la mitad de la magia: descubrir que
+              la teoría más profunda sobre el amor estaba escondida en las
+              historias que viste sin darte cuenta.
+            </p>
+            <ul className="tags" aria-label="Referencias de cultura pop">
+              {popTags.map((tag) => (
+                <li key={tag}>
+                  <span className="tag">{tag}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -197,8 +203,8 @@ export function LandingPage() {
             </div>
             <p className="temario-aside">
               Cada sesión dura <strong>2 horas</strong> en vivo: análisis,
-              ejemplos de cultura pop y conversación. Las cuatro juntas son el
-              recorrido completo del libro de Fromm —llevado a tu vida real.
+              ejemplos de cultura pop y conversación. Las cuatro juntas recorren
+              el libro de Fromm, llevado a tu vida real.
             </p>
           </div>
 
@@ -218,7 +224,9 @@ export function LandingPage() {
                       key={item.strong}
                       className={`card-item${i === 0 ? " card-item-first" : ""}`}
                     >
-                      <span className="dot" />
+                      <span className="dot-mark" aria-hidden="true">
+                        <span className="dot" />
+                      </span>
                       <p>
                         <strong>{item.strong}</strong>{" "}
                         <span className="muted">{item.text}</span>
@@ -242,7 +250,7 @@ export function LandingPage() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <p>
-                  <strong>{item.bold}</strong> {item.rest}
+                  <strong>{item.bold}</strong>: {item.rest}
                 </p>
               </div>
             ))}
@@ -264,9 +272,10 @@ export function LandingPage() {
               {siteConfig.instructor}
             </h2>
             <p className="body">
-              Psicóloga, apasionada por sacar las ideas más profundas de la
-              disciplina fuera del aula. Las cuenta a través del cine, la
-              literatura y los conflictos humanos de quienes las crearon.
+              Estudiante de psicología, apasionada por sacar las ideas más
+              profundas de la disciplina fuera del aula. Las cuenta a través del
+              cine, la literatura y los conflictos humanos de quienes las
+              crearon.
             </p>
             <p className="body">
               Para ella, Fromm no es un autor difícil: es alguien que entendió
@@ -294,7 +303,7 @@ export function LandingPage() {
               <h3 className="payment-title">Pago con tarjeta</h3>
               <p className="body">
                 Inscríbete al instante con débito o crédito. Recibes la
-                confirmación en tu correo y WhatsApp.
+                confirmación en tu correo.
               </p>
               <CheckoutButton />
             </div>
@@ -307,17 +316,24 @@ export function LandingPage() {
                 Pago por transferencia
               </h3>
               <p className="body body-light">
-                Escríbenos por WhatsApp y te pasamos los datos. Apartas tu
-                lugar en un mensaje.
+                {hasWhatsapp
+                  ? "Escríbenos por WhatsApp y te pasamos los datos. Apartas tu lugar en un mensaje."
+                  : "Contáctanos para recibir los datos bancarios y apartar tu lugar."}
               </p>
-              <a
-                href={whatsappTransferUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline"
-              >
-                Escribir por WhatsApp
-              </a>
+              {hasWhatsapp ? (
+                <a
+                  href={whatsappTransferUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline"
+                >
+                  Escribir por WhatsApp
+                </a>
+              ) : (
+                <p className="checkout-note body-light">
+                  Escríbenos para recibir los datos de pago.
+                </p>
+              )}
             </div>
           </div>
         </div>

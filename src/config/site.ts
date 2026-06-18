@@ -1,10 +1,14 @@
 export const siteConfig = {
   name: "Aprender a Amar",
-  title: "Aprender a Amar | Curso en vivo basado en Erich Fromm",
+  title: "Aprender a Amar | Curso en vivo sobre el arte de amar",
+  titleShort: "Aprender a Amar",
   description:
-    "Curso en vivo de 4 sesiones sobre el arte de amar, basado en El arte de amar de Erich Fromm. Con Ainhoa Govea. Aprende a amar como habilidad, no como suerte.",
+    "Curso en vivo de 4 sesiones basado en El arte de amar de Erich Fromm. Con Ainhoa Govea. $400 MXN. Aprende a amar como habilidad, no como suerte.",
+  descriptionAds:
+    "4 sesiones en vivo · 2 horas cada una · Basado en Erich Fromm · Solo $400 pesos · Cupo limitado",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   locale: "es_MX",
+  language: "es",
   price: 400,
   currency: "MXN",
   priceStripe: 40000,
@@ -13,11 +17,19 @@ export const siteConfig = {
   sessionHours: 2,
   keywords: [
     "curso amor",
+    "curso relaciones",
     "Erich Fromm",
     "el arte de amar",
     "psicología relaciones",
     "curso en vivo México",
+    "curso online México",
     "Ainhoa Govea",
     "aprender a amar",
+    "amor consciente",
+    "relaciones sanas",
   ],
+  social: {
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL ?? "",
+  },
 } as const;

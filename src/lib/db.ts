@@ -95,3 +95,28 @@ export async function markNotificationsSent(
     `;
   }
 }
+
+export async function listBuyers() {
+  await ensureSchema();
+  const result = await sql`
+    SELECT * FROM buyers ORDER BY created_at DESC
+  `;
+  return result.rows as Buyer[];
+}
+
+export const BUYERS_TABLE_SCHEMA = `
+CREATE TABLE buyers (
+  id              SERIAL PRIMARY KEY,
+  stripe_session_id TEXT UNIQUE NOT NULL,
+  stripe_payment_intent_id TEXT,
+  email           TEXT NOT NULL,
+  name            TEXT,
+  phone           TEXT,
+  amount          INTEGER NOT NULL,
+  currency        TEXT NOT NULL DEFAULT 'mxn',
+  status          TEXT NOT NULL DEFAULT 'paid',
+  email_sent      BOOLEAN DEFAULT FALSE,
+  whatsapp_sent   BOOLEAN DEFAULT FALSE,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
+`.trim();
